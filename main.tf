@@ -28,6 +28,8 @@ variable "vnet1" {
 	intern_subnet_name = "intern"
 	intern_subnet_range = "10.4.1.0/24"
 	intern_network_security_group = "NSG-AZEUW-VNET-0001-intern-DEV"
+	storage_account_name = "saazeuwroll0001"
+	storage_account_rg = "RZ-AGZEUW-STORAGE-0001-DEV"
     }
 }
 
@@ -43,6 +45,7 @@ variable "vnet2" {
 	intern_subnet_name = "intern"
 	intern_subnet_range = "10.104.1.0/24"
 	intern_network_security_group = "NSG-AZEU1-VNET-0001-intern-DEV"
+	storage_account_name = "saazeu1roll0001"
     }
 }
 
@@ -90,6 +93,22 @@ resource "azurerm_network_security_group" "vnet1_intern_nsg" {
   location            = "${var.vnet1.location}"
   resource_group_name  = "${azurerm_resource_group.vnet1_rg.name}" 
 }
+
+# Storage
+resource "azurerm_resource_group" "vnet1_storage_rg" {
+  name     = "${var.vnet1.storage_account_rg}"
+  location = "${var.vnet1.location}"
+}
+resource "azurerm_storage_account" "storageaccount_euw" {
+  name                     = "${var.vnet1.storage_account_name}"
+  resource_group_name	   = "${azurerm_resource_group.vnet1_storage_rg.name}"
+  location 	           = "${var.vnet1.location}"
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
+
+
 
 #
 # Creating US....
