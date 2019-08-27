@@ -1,8 +1,15 @@
 
+#
 # Configure the Microsoft Azure Provider
+# Note: set either via
+#	export TF_VAR_subscription_id=xxx
+# or pass in as
+#	terraform validate -var 'subscription_id=xxx' 
+#
+variable "subscription_id" { default = "" }
 provider "azurerm" {
-    # subscription_id = ""
-
+    	# subscription_id = ""
+	subscription_id = "${var.subscription_id}"
 }
 
 ###########################################################
